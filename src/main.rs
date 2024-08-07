@@ -43,5 +43,5 @@ fn main() {
     }
 
     // Guardar el framebuffer como BMP
-    BMP::save_as_bmp(&fb, "polygons.bmp").unwrap();
+    BMP::save_as_bmp(&fb, "polygons1.bmp").unwrap();
 }
