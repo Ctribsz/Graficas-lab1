@@ -4,7 +4,7 @@ mod color;
 mod bmp;
 
 use framebuffer::FrameBuffer;
-use geometry::{draw_line, fill_polygon};
+use geometry::{draw_line, fill_polygon, fill_polygon_with_hole};
 use color::Color;
 use bmp::BMP;
 
@@ -22,6 +22,17 @@ fn main() {
 
     let points3 = [
         (377, 249), (411, 197), (436, 249),
+    ];
+
+    let points4 = [
+        (413, 177), (448, 159), (502, 88), (553, 53), (535, 36),
+        (676, 37), (660, 52), (750, 145), (761, 179), (672, 192),
+        (659, 214), (615, 214), (632, 230), (580, 230),
+        (597, 215), (552, 214), (517, 144), (466, 180),
+    ];
+
+    let points5 = [
+        (682, 175), (708, 120), (735, 148), (739, 170),
     ];
 
     // Rellenar el primer polígono con color amarillo
@@ -54,6 +65,23 @@ fn main() {
         draw_line(&mut fb, x0, y0, x1, y1, Color::WHITE);
     }
 
+    // Rellenar el cuarto polígono con color verde y un agujero del quinto polígono
+    fill_polygon_with_hole(&mut fb, &points4, &points5, Color::GREEN);
+
+    // Dibujar la orilla del cuarto polígono con color blanco
+    for i in 0..points4.len() {
+        let (x0, y0) = points4[i];
+        let (x1, y1) = points4[(i + 1) % points4.len()];
+        draw_line(&mut fb, x0, y0, x1, y1, Color::WHITE);
+    }
+
+    // Dibujar la orilla del agujero (quinto polígono) con color blanco
+    for i in 0..points5.len() {
+        let (x0, y0) = points5[i];
+        let (x1, y1) = points5[(i + 1) % points5.len()];
+        draw_line(&mut fb, x0, y0, x1, y1, Color::WHITE);
+    }
+
     // Guardar el framebuffer como BMP
-    BMP::save_as_bmp(&fb, "polygons2.bmp").unwrap();
+    BMP::save_as_bmp(&fb, "polygons3.bmp").unwrap();
 }
