@@ -11,15 +11,17 @@ use bmp::BMP;
 fn main() {
     let mut fb = FrameBuffer::new(800, 600);
 
-    //Poligono 1
     let points1 = [
         (165, 380), (185, 360), (180, 330), (207, 345), (233, 330),
         (230, 360), (250, 380), (220, 385), (205, 410), (193, 383),
     ];
 
-    //Poligono 2
     let points2 = [
         (321, 335), (288, 286), (339, 251), (374, 302),
+    ];
+
+    let points3 = [
+        (377, 249), (411, 197), (436, 249),
     ];
 
     // Rellenar el primer polígono con color amarillo
@@ -42,6 +44,16 @@ fn main() {
         draw_line(&mut fb, x0, y0, x1, y1, Color::WHITE);
     }
 
+    // Rellenar el tercer polígono con color rojo
+    fill_polygon(&mut fb, &points3, Color::RED);
+
+    // Dibujar la orilla del tercer polígono con color blanco
+    for i in 0..points3.len() {
+        let (x0, y0) = points3[i];
+        let (x1, y1) = points3[(i + 1) % points3.len()];
+        draw_line(&mut fb, x0, y0, x1, y1, Color::WHITE);
+    }
+
     // Guardar el framebuffer como BMP
-    BMP::save_as_bmp(&fb, "polygons.bmp").unwrap();
+    BMP::save_as_bmp(&fb, "polygons2.bmp").unwrap();
 }
